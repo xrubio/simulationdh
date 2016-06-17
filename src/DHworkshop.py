@@ -12,7 +12,7 @@ plt.style.use('ggplot') # makes graphs pretty
 MAX_TIME = 1000
 t = 0               # initial time
 N = 100          # population size
-A = 80             # initial proportion of believers A
+A = 59            # initial proportion of believers A
 B = N-A             # initial proportion of believers B
 
 """
@@ -23,8 +23,8 @@ it may be an overkill - it's gonna add an unnecessary line of code.
 
 !!!!!!!!!!!
 """
-Ta = 10.0            # initial attractiveness of option A
-Tb = 1.0            # initial attractiveness of option B
+Ta = 1.0            # initial attractiveness of option A
+Tb = 1.5            # initial attractiveness of option B
 alpha = 0.1         # strength of the transmission process
 believersA = [A]    # the first value is equal to the initialisation value (defined above)
 believersB = [B]
@@ -49,19 +49,25 @@ def attractiveness(Ta, Tb):
 
     ####### different options for modelling attractiveness  ########
     # OPTION 1 - fixed attractiveness
-    Ka = 0 
+    Ka = 0
     Kb = 0
+
+    Ta = Ta+Ka
+    Tb = Tb+Ka
 
     """
     # OPTION 2 - gaussian noise
-    #    Ka, Kb = np.random.normal(0, 1, 2)    
+    Ka, Kb = np.random.normal(0, 1, 2)    
     # the winner is the difference between the 2
     minValue = min(Ka,Kb)
     Ka = Ka - minValue
     Kb = Kb - minValue
- 
+
+    Ta = Ka
+    Tb = Kb
     """
 
+    """
     # OPTION 3 - anti-conformist behavior 
     # sort of lotka-volterra where diff of attractiveness is negatively correlated with diff of populations
     # we use gamma to add some stochasticity
@@ -74,6 +80,8 @@ def attractiveness(Ta, Tb):
     # add 1 to avoid dividing by 0 if both are 0        
     Ta = 1+Ka
     Tb = 1+Kb
+    """
+
     return Ta, Tb
 
 while t < MAX_TIME: 
