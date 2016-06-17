@@ -126,4 +126,4 @@ plt.plot(attractA)
 plt.plot(attractB) 
 
 plt.show()
-
+#plt.savefig('DH2016.png')
