@@ -59,14 +59,12 @@ while t < MAX_TIME:
     
     """
    
-    print('next step:',t)
-
     # define the current attractiveness of each option
-    Ta_now, Tb_now = attractiveness(Ta, Tb)  
+    Ta, Tb = attractiveness(Ta, Tb)  
     
     # calculate the change between believers A and B in the current time step       
-    changeBA = alpha * transmission(A, Ta_now, Tb_now) * B       
-    changeAB = alpha * transmission(B, Tb_now, Ta_now) * A    
+    changeBA = alpha * transmission(A, Ta, Tb) * B       
+    changeAB = alpha * transmission(B, Tb, Ta) * A    
 
     # update the population    
     A = A + changeBA 
@@ -84,4 +82,4 @@ while t < MAX_TIME:
 plt.plot(believersA)
 plt.plot(believersB) 
 plt.show()
-
+#plt.savefig('DH2016.png')
