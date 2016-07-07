@@ -7,21 +7,15 @@ import matplotlib.pyplot as plt
 plt.style.use('ggplot') # makes graphs pretty
 
 # initialisation 
+N = 100     # population size
+A = 65      # initial number of believers A
+B = N-A     # initial number of believers B
+
+
 MAX_TIME = 100
 t = 0               # initial time
-N = 100          # population size
-A = 50            # initial proportion of believers A
-B = N-A             # initial proportion of believers B
-
-"""
-!!!!!!!!!!!
-Q: should we keep 'attractiveness' normalised? I don't think it matters too much 
-cause we take a relative value anyways so it's more a question of 'do we want to make it pretty, pretty' 
-it may be an overkill - it's gonna add an unnecessary line of code. 
-!!!!!!!!!!!
-"""
 Ta = 1.0            # initial attractiveness of option A
-Tb = 1.1            # initial attractiveness of option B
+Tb = 2.0            # initial attractiveness of option B
 alpha = 0.1         # strength of the transmission process
 believersA = [A]    # the first value is equal to the initialisation value (defined above)
 believersB = [B]
@@ -29,17 +23,17 @@ attractA = [Ta]
 attractB = [Tb]
 
     
-def transmission(believers, Tx,Ty):
-    """ transmission is the rate of 'conversion' of believers from one option (religion) to another.
-        It depends on the current proportion between believers in the populaiton (no_adopters).
-        And it's attractiveness to believers (defined in the 'attractiveness' function).
+def payoff(believers, Tx,Ty):
+    """ payoff is the interest of 'conversion' of believers from one option (religion) to another.
+        It depends on the current proportion between believers in the population.
+        And its attractiveness to believers (defined in the 'attractiveness' function).
     """
-    no_adopters = (believers / N) 
+    proportionBelievers = (believers / N) 
     attraction = (Tx) / (Ty + Tx)
-    return no_adopters * attraction
+    return proportionBelievers * attraction
 
 def attractiveness(Ta, Tb):
-    """ attractiveness is a dynamically changing feature of each cultural soption. 
+    """ attractiveness is a dynamically changing feature of each cultural option. 
     The function is composed of the current value for each option (Ta, Tb)
     and a small stochastic change defined by the function K
     
@@ -47,8 +41,9 @@ def attractiveness(Ta, Tb):
     ####### different options for modelling attractiveness  ########
     # OPTION 1 - fixed attractiveness
     """
-    Ka = 0
+    Ka = 0.01
     Kb = 0
+
 
     Ta = Ta+Ka
     Tb = Tb+Kb
@@ -56,33 +51,38 @@ def attractiveness(Ta, Tb):
     return Ta, Tb
     
     
-def attractiveness1(Ta, Tb):   
-    """ # OPTION 2 - gaussian noise
+def attractiveness2(Ta, Tb):   
     """
-    Ka, Kb = np.random.normal(0, 1, 2)    
-    # the winner is the difference between the 2
-    minValue = min(Ka,Kb)
-    Ta = Ka - minValue
-    Tb = Kb - minValue
+    # OPTION 2 - gaussian noise with strong tail (lognormal distribution)
+    """
+    Ka, Kb = np.random.normal(0, 1, 2)
+    diff = Ka-Kb
+    Ta += diff
+    Tb -= diff
     return Ta, Tb
 
     
-def attractiveness2(Ta, Tb):
+def attractiveness3(Ta, Tb):
     """
     # OPTION 3 - anti-conformist behavior 
     # sort of lotka-volterra where diff of attractiveness is negatively correlated with diff of populations
     # we use gamma to add some stochasticity
     """
     Ka = 0
-    Kb = 0    
-    diffPop = np.random.gamma(0.1*believersA[t]) - np.random.gamma(0.1*believersB[t])
+    Kb = 0
+
+    diffPop = np.random.gamma(believersA[t], 1) - np.random.gamma(believersB[t], 1)
+    # if diffPop is negative it means that we have more believers of A than B
+    # so we have to promote Kb
     if diffPop<0:
         Ka = -diffPop
+
+    # else we should promote Ka        
     else:
         Kb = diffPop
     # add 1 to avoid dividing by 0 if both are 0        
-    Ta = 1+Ka
-    Tb = 1+Kb
+    Ta += Ka
+    Tb += Kb
 
     return Ta, Tb
 
@@ -98,25 +98,27 @@ while t < MAX_TIME:
     print('next step:',t,'with pops:',A,B)
 
     # define the current attractiveness of each option
-    Ta, Tb = attractiveness2(Ta, Tb)
+    Ta, Tb = attractiveness3(Ta, Tb)
     attractA.append(Ta)
     attractB.append(Tb)
     
     # calculate the change between believers A and B in the current time step       
-    changeBA = alpha * transmission(A, Ta, Tb)      
-    changeAB = alpha * transmission(B, Tb, Ta)     
-    finalDiff = changeBA - changeAB
+    variationBA = payoff(A, Ta, Tb)      
+    variationAB = payoff(B, Tb, Ta)     
+    difference = variationBA - variationAB
 
     # B -> A
-    if finalDiff > 0:
-        change = finalDiff*B
+    if difference> 0:
+        variation = difference*B
     # A -> B        
     else:
-        change = finalDiff*A
+        variation = difference*A
 
+    # control the pace of variation with alpha
+    variation = alpha*variation        
     # update the population    
-    A = A + change
-    B = B - change
+    A = A + variation
+    B = B - variation
     
     # save the values to a list for plotting    
     believersA.append(A)
