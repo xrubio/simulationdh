@@ -98,7 +98,7 @@ while t < MAX_TIME:
     print('next step:',t,'with pops:',A,B)
 
     # define the current attractiveness of each option
-    Ta, Tb = attractiveness3(Ta, Tb)
+    Ta, Tb = attractiveness(Ta, Tb)
     attractA.append(Ta)
     attractB.append(Tb)
     
@@ -128,16 +128,16 @@ while t < MAX_TIME:
     t+=1 
     
 # plot the results   
-plt.figure(1)
+#plt.figure(1)
 
-plt.subplot(211)    
-plt.ylim(0,1.1*N)    
+#plt.subplot(211)    
+#plt.ylim(0,1.1*N)    
 plt.plot(believersA)
 plt.plot(believersB) 
 
-plt.subplot(212)
-plt.plot(attractA)
-plt.plot(attractB) 
+#plt.subplot(212)
+#plt.plot(attractA)
+#plt.plot(attractB) 
 
 plt.show()
-#plt.savefig('DH2016.png')
+plt.savefig('fig2.png')
