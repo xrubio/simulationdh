@@ -17,10 +17,11 @@ t = 0               # initial time
 Ta = 1.0            # initial attractiveness of option A
 Tb = 2.0            # initial attractiveness of option B
 alpha = 0.1         # strength of the transmission process
-believersA = [A]    # the first value is equal to the initialisation value (defined above)
-believersB = [B]
-attractA = [Ta]
-attractB = [Tb]
+believersA = []    
+believersB = []
+
+believersA.append(A)
+believersB.append(B)
 
     
 def payoff(believers, Tx,Ty):
@@ -41,7 +42,7 @@ def attractiveness(Ta, Tb):
     ####### different options for modelling attractiveness  ########
     # OPTION 1 - fixed attractiveness
     """
-    Ka = 0.01
+    Ka = 0.1
     Kb = 0
 
 
@@ -96,9 +97,7 @@ while t < MAX_TIME:
     """
    
     # define the current attractiveness of each option
-    Ta, Tb = attractiveness2(Ta, Tb)
-    attractA.append(Ta)
-    attractB.append(Tb)
+    Ta, Tb = attractiveness(Ta, Tb)
     
     # calculate the change between believers A and B in the current time step       
     variationBA = payoff(A, Ta, Tb)      
@@ -126,16 +125,8 @@ while t < MAX_TIME:
     t+=1 
     
 # plot the results   
-plt.figure(1)
-
-plt.subplot(211)    
-plt.ylim(0,1.1*N)    
 plt.plot(believersA)
 plt.plot(believersB) 
-
-plt.subplot(212)
-plt.plot(attractA)
-plt.plot(attractB) 
 
 plt.show()
 #plt.savefig('plottedFig.png')
