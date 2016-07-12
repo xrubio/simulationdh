@@ -1,5 +1,25 @@
 #!/usr/bin/python3
 
+"""
+Copyright (c) 2016
+Xavier Rubio-Campillo
+Jonàs Alcaina
+Iza Romanowska
+
+This file is part of free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This file is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public 
+License along with this file.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 import random
 import numpy as np
 
@@ -97,7 +117,7 @@ while t < MAX_TIME:
     """
    
     # define the current attractiveness of each option
-    Ta, Tb = attractiveness(Ta, Tb)
+    Ta, Tb = attractiveness2(Ta, Tb)
     
     # calculate the change between believers A and B in the current time step       
     variationBA = payoff(A, Ta, Tb)      
@@ -129,4 +149,3 @@ plt.plot(believersA)
 plt.plot(believersB) 
 
 plt.show()
-#plt.savefig('plottedFig.png')
