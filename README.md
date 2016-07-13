@@ -1,7 +1,5 @@
 Source code and materials for the tutorial 'Introduction to Simulation: Complex social dynamics in a few lines of code'
-DOI; http://dx.doi.org/10.5281/zenodo.57527
-
-
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.57660.svg)](http://dx.doi.org/10.5281/zenodo.57660)
 INTRODUCTION
 
 The tutorial was held on 11th July, 2016 within the Digital Humanities conference at Krakow, Poland.
