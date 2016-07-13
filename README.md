@@ -14,6 +14,7 @@ A Python programming environment should be configured in the computer before sta
 deploy all the needed dependencies.
 
 In addition, you will need a development environment where to type and execute our source code. You can use spyder which is already part of Anaconda:
+
 1. Go to: https://www.continuum.io/
 2. Choose a Python 3.5 windows, linux or osx installer depending on your system (Attention: please make sure you install python 3.5 and not python 2.7).
 3. Follow the installation instructions
