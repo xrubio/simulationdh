@@ -1,4 +1,6 @@
 Source code and materials for the tutorial 'Introduction to Simulation: Complex social dynamics in a few lines of code'
+DOI; http://dx.doi.org/10.5281/zenodo.57527
+
 
 INTRODUCTION
 
